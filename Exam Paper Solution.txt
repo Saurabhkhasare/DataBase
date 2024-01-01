@@ -1,0 +1,182 @@
+1.WRITE AN SQL QUERY TO FETCH FULLNAME , SALARY , JOINING_DATE AND DEPARTMENT FROM WORKER TABLE
+mysql> select concat(first_name," ",last_name) as FULLNAME , salary, joining_date,department from worker;
++-----------------+--------+---------------------+------------+
+| FULLNAME        | salary | joining_date        | department |
++-----------------+--------+---------------------+------------+
+| Monika Arora    | 100000 | 2014-02-20 09:00:00 | HR         |
+| Niharika Verma  |  80000 | 2014-06-11 09:00:00 | Admin      |
+| Vishal Singhal  | 300000 | 2014-02-20 09:00:00 | HR         |
+| Amitabh Singh   | 500000 | 2014-02-20 09:00:00 | Admin      |
+| Vivek Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |
+| Vipul Diwan     | 200000 | 2014-06-11 09:00:00 | Account    |
+| Satish Kumar    |  75000 | 2014-01-20 09:00:00 | Account    |
+| Geetika Chauhan |  90000 | 2014-04-11 09:00:00 | Admin      |
++-----------------+--------+---------------------+------------+
+
+ii.WRITE AN SQL QUERY TO FETCH ID , FULLNAME , SALARY AND DEPARTMENT WHOSE DEPARTMENT IS HR OR ADMIN 
+mysql> select worker_id,concat(first_name," ",last_name) as FULLNAME , salary,department from worker where department in("HR","Admin");
++-----------+-----------------+--------+------------+
+| worker_id | FULLNAME        | salary | department |
++-----------+-----------------+--------+------------+
+|         1 | Monika Arora    | 100000 | HR         |
+|         2 | Niharika Verma  |  80000 | Admin      |
+|         3 | Vishal Singhal  | 300000 | HR         |
+|         4 | Amitabh Singh   | 500000 | Admin      |
+|         5 | Vivek Bhati     | 500000 | Admin      |
+|         8 | Geetika Chauhan |  90000 | Admin      |
++-----------+-----------------+--------+------------+
+
+iii.WRITE AN SQL QUERY TO FETCH ID , FULLNAME , SALARY WHOSE FIRST_NAME ENDS WITH 'a' 
+mysql> select worker_id,concat(first_name," ",last_name) as FULLNAME , salary from worker where first_name like "%a";
++-----------+-----------------+--------+
+| worker_id | FULLNAME        | salary |
++-----------+-----------------+--------+
+|         1 | Monika Arora    | 100000 |
+|         2 | Niharika Verma  |  80000 |
+|         8 | Geetika Chauhan |  90000 |
++-----------+-----------------+--------+
+
+iv. WRITE AN SQL QUERY TO FEACH ALL RECORDS OF WORKER TABLE WHO HAVE JOIN IN FEB 2020 
+mysql> select * from worker where month(joining_date) = 2 and year(joining_date)=2020;
++-----------+------------+-----------+---------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY  | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+---------+---------------------+------------+
+|         9 | kshitij    | varshney  | 2000000 | 2020-02-12 00:00:00 | HR         |
++-----------+------------+-----------+---------+---------------------+------------+
+
+V. WRITE AN SQL QUERY TO FEACH ALL RECORDS OF WORKER TABLE WHO HAVE SALARY >=50000 
+AND <=100000.
+mysql> select * from worker where salary>=50000 and salary<=100000;
+								OR
+mysql> select * from worker where salary between 50000 and 100000;
++-----------+------------+-----------+--------+---------------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT |
++-----------+------------+-----------+--------+---------------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |
+|         2 | Niharika   | Verma     |  80000 | 2014-06-11 09:00:00 | Admin      |
+|         7 | Satish     | Kumar     |  75000 | 2014-01-20 09:00:00 | Account    |
+|         8 | Geetika    | Chauhan   |  90000 | 2014-04-11 09:00:00 | Admin      |
++-----------+------------+-----------+--------+---------------------+------------+
+Q2)))))))))))))))))))))))))))))))))))))))))))
+i. WRITE AN SQL QUERY TO DISPLAY NUMBER OF WORKER IN EACH DEPARTMENT ALONG WITH 
+UNIQUE DEPARTMENT NAME 
+mysql> select department,Count(*) as Number_Of_Workers from worker group by department;
++------------+-------------------+
+| department | Number_Of_Workers |
++------------+-------------------+
+| HR         |                 3 |
+| Admin      |                 4 |
+| Account    |                 2 |
++------------+-------------------+
+ ii.WRITE AN SQL QUERY TO DISPLAY DEPARTMENT NAME AND TOTAL BONUS AMOUNT TO BE PAID IN 
+EACH DEPARTMENT 
+mysql> select w.department,sum(b.bonus_amount) as total_bonus from worker w join bonus b on w.worker_id = b.worker_ref_id group by department;
++------------+-------------+
+| department | total_bonus |
++------------+-------------+
+| HR         |       13500 |
+| Admin      |        6500 |
++------------+-------------+
+ iii.WRITE AN SQL QUERY TO DISPALY THE FULLNAME , SALARY , TOTAL YEARS OF EXPERIANCE OF 
+EACH WORKER 
+mysql> select concat(first_name," ",last_name) as FULLNAME , salary, round(datediff(curdate(),joining_date)/365,2) as TOTAL_YEARS_OF_EXPEREINCE from worker;
++------------------+---------+---------------------------+
+| FULLNAME         | salary  | TOTAL_YEARS_OF_EXPEREINCE |
++------------------+---------+---------------------------+
+| Monika Arora     |  100000 |                      9.87 |
+| Niharika Verma   |   80000 |                      9.56 |
+| Vishal Singhal   |  300000 |                      9.87 |
+| Amitabh Singh    |  500000 |                      9.87 |
+| Vivek Bhati      |  500000 |                      9.56 |
+| Vipul Diwan      |  200000 |                      9.56 |
+| Satish Kumar     |   75000 |                      9.95 |
+| Geetika Chauhan  |   90000 |                      9.73 |
+| kshitij varshney | 2000000 |                      3.88 |
++------------------+---------+---------------------------+
+iv.WRITE AN SQL QUERY TO DISPALY THE DETAILS OF THE WORKER WHO IS MANAGER
+mysql> select w.* from worker w join title t on w.worker_id = t.worker_ref_id where t.worker_title='Manager';
++-----------+------------+-----------+--------+---------------------+------------+------------+
+| WORKER_ID | FIRST_NAME | LAST_NAME | SALARY | JOINING_DATE        | DEPARTMENT | hourly_pay |
++-----------+------------+-----------+--------+---------------------+------------+------------+
+|         1 | Monika     | Arora     | 100000 | 2014-02-20 09:00:00 | HR         |       NULL |
+|         5 | Vivek      | Bhati     | 500000 | 2014-06-11 09:00:00 | Admin      |       NULL |
++-----------+------------+-----------+--------+---------------------+------------+------------+
+
+Q3)))))))))))))))))))))))))))
+ii. CREATE A FUNCTION IN MYSQL THAT WILL ACCEPT THE ONE INPUT PARAMETER AS WORKER ID 
+AND BASED ON THE ID 
+ RETURN THE TOTAL SALARY IN EACH DEPARTMENT
+ 
+delimiter |
+ create function workerFunc (workerId int) returns int
+  Deterministic
+  begin
+	  declare sumSalary int;
+	  declare deptName varchar(50);
+	  select department into deptName from worker where worker_id =workerId;
+	  select SUM(salary) into sumSalary from worker where department = deptName;
+	  return sumSalary;
+  end |
+delimiter ;
+
+Call workerFunc(6);
+
+4 CREATE A CURSOR IN MYSQL, BY USING THE CURSOR RETURN THE COMMA SEPRATED LIST OF 
+WORKER NAMES 5 MARKS
+ eg. Monika , Vishal , Satish , Vipul ......
+ 
+ 
+ mysql> Delimiter |
+mysql>  CREATE PROCEDURE GetWorkerNames()
+   BEGIN
+        DECLARE done INT DEFAULT 0;
+    DECLARE worker_name VARCHAR(20) ;
+        DECLARE worker_list VARCHAR(2000) DEFAULT '';
+     declare worker_cursor cursor for select first_name from worker;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = 1;
+   
+     open worker_cursor;
+   
+    worker_loop :loop
+    FETCH worker_cursor into worker_name;
+    if done then
+    leave worker_loop;
+    end if;
+   
+    set worker_list = concat(worker_list,worker_name,", ");
+    end loop;
+     close worker_cursor;
+   
+    set worker_list = substring(worker_list,1,length(worker_list)-2);
+    select worker_list as List_of_Workers;
+    end |
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>  Delimiter ;
+mysql> call GetWorkerNames();
++-----------------------------------------------------------------------------------------------------+
+| List_of_Workers                                                                                     |
++-----------------------------------------------------------------------------------------------------+
+| Amitabh, Geetika, kshitij, Monika, nasditin, Niharika, nitin, Satish, saurabh, Vipul, Vishal, Vivek |
++-----------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec) 
+
+5)CREATE A AFTER INSERT TRIGGER IN MYSQL .. 5 MARKS 
+ CREATE AN EMP_DETAILS TABLES AS FOLLOWS 
+ ID , FIRST_NAME , LAST_NAME , DEPARTMENT_ID ,SALARY 
+ WHEN AN INSERT HAPPEN INTO THE EMP_DETAILS TABLE INSERT THE FIRST_NAME , LAST_NAME 
+AND SALARY INTO THE 
+ EMP_LOG_DETAILS TABLE
+ 
+ mysql> create table EMP_DETAILS (Id int,First_name varchar(50),last_name varchar(50),department_id int,salary int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table EMP_LOG_DETAILS (First_name varchar(50),last_name varchar(50),salary int);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create trigger after_insert_employee
+		after insert on EMP_DETAILS
+		for each row
+		insert into EMP_LOG_DETAILS values(new.First_name,new.last_name,new.salary);
+		
+		 
