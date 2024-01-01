@@ -1,0 +1,97 @@
+test> use simple_db
+switched to db simple_db
+simple_db> db.createCollection("my_col");
+{ ok: 1 }
+simple_db> db.my_col.insert([{title:"Mongodb overview",description:"mongodb is no sql database",by:"tutorials point",url:"http://www.tutorialspoint.com",tags:["mongodb","database","nosql"],likes:100},
+{title:"nosql database doesn't have tables",by:"tutorials point",url:"http://www.tutorialspoint.com",tags:["mongodb","database","nosql"],likes:20,comments:[{user:"user1",message:"my first comment",dateCreated: new Date(2013,11,10,2,35),likes:0}]}])
+DeprecationWarning: Collection.insert() is deprecated. Use insertOne, insertMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('65914c69007bf9323efee063'),
+    '1': ObjectId('65914c69007bf9323efee064')
+  }
+}
+simple_db> db.my_col.find();
+[
+  {
+    _id: ObjectId('65914c69007bf9323efee063'),
+    title: 'Mongodb overview',
+    description: 'mongodb is no sql database',
+    by: 'tutorials point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'nosql' ],
+    likes: 100
+  },
+  {
+    _id: ObjectId('65914c69007bf9323efee064'),
+    title: "nosql database doesn't have tables",
+    by: 'tutorials point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'nosql' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'my first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        likes: 0
+      }
+    ]
+  }
+]
+
+--------------------------------------------------
+Q.1.3.1.1
+
+simple_db> db.my_col.find({likes:{$gt:10}})
+[
+  {
+    _id: ObjectId('65914c69007bf9323efee063'),
+    title: 'Mongodb overview',
+    description: 'mongodb is no sql database',
+    by: 'tutorials point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'nosql' ],
+    likes: 100
+  },
+  {
+    _id: ObjectId('65914c69007bf9323efee064'),
+    title: "nosql database doesn't have tables",
+    by: 'tutorials point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'nosql' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'my first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        likes: 0
+      }
+    ]
+  }
+]
+
+-----------------------------------------
+Q.1.3.1.2
+
+simple_db> db.my_col.find({"comments.user":"user1"});
+[
+  {
+    _id: ObjectId('65914c69007bf9323efee064'),
+    title: "nosql database doesn't have tables",
+    by: 'tutorials point',
+    url: 'http://www.tutorialspoint.com',
+    tags: [ 'mongodb', 'database', 'nosql' ],
+    likes: 20,
+    comments: [
+      {
+        user: 'user1',
+        message: 'my first comment',
+        dateCreated: ISODate('2013-12-09T21:05:00.000Z'),
+        likes: 0
+      }
+    ]
+  }
+]
